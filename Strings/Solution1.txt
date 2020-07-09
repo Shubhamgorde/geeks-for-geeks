@@ -1,0 +1,55 @@
+// Installed npm packages: jquery underscore request express
+// jade shelljs passport http sys lodash async mocha chai sinon
+// sinon-chai moment connect validator restify ejs ws co when
+// helmet wrench brain mustache should backbone forever debug jsdom
+
+
+
+// 4 3 2 7 8 9
+
+// output : 7
+
+// let a = [4, 3, 2, 7, 8, 9]
+str ="pqr.www.rrr";
+
+// much.very.program.this.like.i
+
+// console.log(str.split(".").reverse().join("."))
+
+// arr=[];
+// strD="";
+// for(let i=0;i<str.length;i++){
+//   // console.log(str[i])
+//   if (str.charAt(i) != '.'){
+//     arr.push(str)
+//     strD="";
+//   }else{
+//     strD +=str[i];
+//   }
+// }
+// console.log(arr);
+
+
+
+
+let count = 0
+let newStr="";
+for(let i=str.length - 1;i >= 0 ; i--){
+  if(str.charAt(i) != '.')
+    count++
+  if(str.charAt(i) == "."){
+    for (let j = 1; j < count+1; j++)
+      newStr = newStr + str.charAt(i + j);
+    newStr += "."
+    count = 0
+  }
+}
+
+count = 0
+while(str.charAt(count)!="."){
+  newStr += str.charAt(count)
+  count++
+}
+
+
+console.log("final String : " + newStr)

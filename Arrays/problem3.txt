@@ -1,0 +1,42 @@
+ select sum(Case when Date_Format(dpd.timestamp, '%M %d %Y') = Date_Format(?2, '%M %d %Y') 
+                                                                   then dpd.amount 
+                                                                   else 0
+                                                                   end) as cfyTdateDpdOutstandingTotal, 
+                                                          sum(Case when Date_Format(dpd.timestamp, '%M %d %Y')  = Date_Format(?3 , '%M %d %Y') 
+                                                                   then dpd.amount 
+                                                                   else 0
+                                                                   end) as cfyEndDateDpdOutstandingTotal, 
+                                                          sum(Case when (Date_Format(dpd.timestamp, '%M %d %Y')  = Date_Format(?2 , '%M %d %Y') and 
+                                                                           dpd.dpd >0 and dpd.dpd <=10) 
+                                                                   then dpd.amount 
+                                                                   else 0 
+                                                                   end) as cfyTdateDpdOutstandingRangeLevel1, 
+                                                          sum(Case when (Date_Format(dpd.timestamp, '%M %d %Y')  = Date_Format(?2, '%M %d %Y') and dpd.dpd > 10 
+                                                                           and dpd.dpd <=30) 
+                                                                   then dpd.amount 
+                                                                   else 0 
+                                                                   end) as cfyTdateDpdOutstandingRangeLevel2, 
+                                                          sum(Case when (Date_Format(dpd.timestamp, '%M %d %Y')  = Date_Format(?2, '%M %d %Y') and dpd.dpd > 30
+                                                                       and dpd.dpd <=90) 
+                                                                   then dpd.amount 
+                                                                   else 0 
+                                                                   end) as cfyTdateDpdOutstandingRangeLevel3, 
+                                                          sum(Case when (Date_Format(dpd.timestamp, '%M %d %Y')  = Date_Format(?2, '%M %d %Y') and dpd.dpd >90) 
+                                                                   then dpd.amount 
+                                                                   else 0 
+                                                                   end) as cfyTdateDpdOutstandingRangeLevel4, 
+                                                          sum(Case when (Date_Format(dpd.timestamp, '%M %d %Y')  = Date_Format(?3, '%M %d %Y') and dpd.dpd >90) 
+                                                                   then dpd.amount 
+                                                                   else 0 
+                                                                   end) as cfyEndDateDpdOutstandingRangeLevel4, 
+                                                          sum(Case when (Date_Format(dpd.timestamp, '%M %d %Y')  = Date_Format(?3, '%M %d %Y') and dpd.dpd > 10 
+                                                                               and dpd.dpd <= 30) 
+                                                                   then dpd.amount 
+                                                                   else 0 
+                                                                   end) as cfyEndDateDpdOutstandingRangeLevel2 
+//                                                           ?2 as tdate,
+//                                                           ?3 as cfyEndDate
+                                                       from  dpd as dpd 
+                                                       where dpd.relationship_manager_id like ?1 and dpd.dpd_npa like 'DPD' and 
+                                                               (Date_Format(dpd.timestamp, '%M %d %Y')  = Date_Format(?2 , '%M %d %Y') 
+                                                               or Date_Format(dpd.timestamp, '%M %d %Y')  = Date_Format(?3, '%M %d %Y'))
